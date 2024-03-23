@@ -5,7 +5,6 @@ import android.app.NotificationManager
 import android.app.Service
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.os.IBinder
 import android.util.Log
 import androidx.core.app.NotificationCompat
@@ -28,10 +27,11 @@ class MyForegroundService : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         log("onStartCommand")
         coroutineScope.launch{
-            for (i in 0 until 100) {
+            for (i in 0 until 10) {
                 delay(1000)
                 log("Timer $i")
             }
+            //stopSelf()
         }
         return START_STICKY
     }
@@ -64,7 +64,9 @@ class MyForegroundService : Service() {
         .setContentTitle("Title")
         .setContentText("Text")
         .setSmallIcon(R.drawable.ic_launcher_background)
+        //.setOngoing(true)
         .build()
+
 
     companion object {
 

@@ -16,7 +16,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         binding.simpleService.setOnClickListener {
-            startService(MyService.newIntent(this, 25))
+            //startService(MyService.newIntent(this, 25))
+            stopService(MyForegroundService.newIntent(this))
         }
         binding.foregroundService.setOnClickListener {
             ContextCompat.startForegroundService(
