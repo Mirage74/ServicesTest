@@ -21,8 +21,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         binding.simpleService.setOnClickListener {
-            //startService(MyService.newIntent(this, 25))
             stopService(MyForegroundService.newIntent(this))
+            startService(MyService.newIntent(this, 25))
         }
         binding.foregroundService.setOnClickListener {
             ContextCompat.startForegroundService(
@@ -37,19 +37,17 @@ class MainActivity : AppCompatActivity() {
             )
         }
         binding.jobScheduler.setOnClickListener {
-            binding.jobScheduler.setOnClickListener {
-                val componentName = ComponentName(this, MyJobService::class.java)
+            val componentName = ComponentName(this, MyJobService::class.java)
 
-                val jobInfo = JobInfo.Builder(MyJobService.JOB_ID, componentName)
-                    .setRequiresCharging(true)
-                    .setRequiredNetworkType(JobInfo.NETWORK_TYPE_UNMETERED)
-                    .build()
+            val jobInfo = JobInfo.Builder(MyJobService.JOB_ID, componentName)
+                .setRequiresCharging(true)
+                .setRequiredNetworkType(JobInfo.NETWORK_TYPE_UNMETERED)
+                .build()
 
-                val jobScheduler = getSystemService(JOB_SCHEDULER_SERVICE) as JobScheduler
+            val jobScheduler = getSystemService(JOB_SCHEDULER_SERVICE) as JobScheduler
 
-                val intent = MyJobService.newIntent(page++)
-                jobScheduler.enqueue(jobInfo, JobWorkItem(intent))
-            }
+            val intent = MyJobService.newIntent(page++)
+            jobScheduler.enqueue(jobInfo, JobWorkItem(intent))
         }
     }
 }
