@@ -33,6 +33,9 @@
         <service
             android:name=".MyForegroundService"
             android:foregroundServiceType="specialUse" />
+        <service
+            android:name=".MyIntentService"
+            android:foregroundServiceType="specialUse" />
     </application>
 
 </manifest>
