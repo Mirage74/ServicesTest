@@ -1,16 +1,13 @@
 package com.balex.servicestest
 
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.os.Build
 import android.os.Bundle
-import com.balex.servicestest.databinding.ActivityMainBinding
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat
+import com.balex.servicestest.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
-    private var id = 0
+    //private var id = 0
     private val binding by lazy {
         ActivityMainBinding.inflate(layoutInflater)
     }
@@ -22,30 +19,13 @@ class MainActivity : AppCompatActivity() {
             startService(MyService.newIntent(this, 25))
         }
         binding.foregroundService.setOnClickListener {
-            showNotification()
+            ContextCompat.startForegroundService(
+                this,
+                MyForegroundService.newIntent(this)
+            )
         }
     }
 
-    private fun showNotification() {
-        val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-        val notificationChannel = NotificationChannel(
-            CHANNEL_ID,
-            CHANNEL_NAME,
-            NotificationManager.IMPORTANCE_DEFAULT
-        )
-        notificationManager.createNotificationChannel(notificationChannel)
-        val notification = NotificationCompat.Builder(this, CHANNEL_ID)
-            .setContentTitle("Title")
-            .setContentText("Text")
-            .setSmallIcon(R.drawable.ic_launcher_background)
-            .build()
-        notificationManager.notify(id++, notification)
-    }
 
-    companion object {
-
-        private const val CHANNEL_ID = "channel_id"
-        private const val CHANNEL_NAME = "channel_name"
-    }
 }
 
