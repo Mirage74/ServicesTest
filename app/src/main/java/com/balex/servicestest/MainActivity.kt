@@ -2,6 +2,7 @@ package com.balex.servicestest
 
 import android.app.job.JobInfo
 import android.app.job.JobScheduler
+import android.app.job.JobWorkItem
 import android.content.ComponentName
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -10,10 +11,11 @@ import com.balex.servicestest.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
-    //private var id = 0
     private val binding by lazy {
         ActivityMainBinding.inflate(layoutInflater)
     }
+
+    private var page = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,18 +37,19 @@ class MainActivity : AppCompatActivity() {
             )
         }
         binding.jobScheduler.setOnClickListener {
-            val componentName = ComponentName(this, MyJobService::class.java)
+            binding.jobScheduler.setOnClickListener {
+                val componentName = ComponentName(this, MyJobService::class.java)
 
-            val jobInfo = JobInfo.Builder(MyJobService.JOB_ID, componentName)
-                .setRequiresCharging(true)
-                .setRequiredNetworkType(JobInfo.NETWORK_TYPE_UNMETERED)
-                .setPersisted(true)
-                .build()
+                val jobInfo = JobInfo.Builder(MyJobService.JOB_ID, componentName)
+                    .setRequiresCharging(true)
+                    .setRequiredNetworkType(JobInfo.NETWORK_TYPE_UNMETERED)
+                    .build()
 
-            val jobScheduler = getSystemService(JOB_SCHEDULER_SERVICE) as JobScheduler
-            jobScheduler.schedule(jobInfo)
+                val jobScheduler = getSystemService(JOB_SCHEDULER_SERVICE) as JobScheduler
+
+                val intent = MyJobService.newIntent(page++)
+                jobScheduler.enqueue(jobInfo, JobWorkItem(intent))
+            }
         }
     }
-
 }
-
