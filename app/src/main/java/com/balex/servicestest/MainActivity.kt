@@ -4,7 +4,6 @@ import android.app.job.JobInfo
 import android.app.job.JobScheduler
 import android.app.job.JobWorkItem
 import android.content.ComponentName
-import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -49,12 +48,8 @@ class MainActivity : AppCompatActivity() {
 
             val jobScheduler = getSystemService(JOB_SCHEDULER_SERVICE) as JobScheduler
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                val intent = MyJobService.newIntent(page++)
-                jobScheduler.enqueue(jobInfo, JobWorkItem(intent))
-            } else {
-                startService(MyIntentService2.newIntent(this, page++))
-            }
+            val intent = MyJobService.newIntent(page++)
+            jobScheduler.enqueue(jobInfo, JobWorkItem(intent))
         }
         binding.jobIntentService.setOnClickListener {
             MyJobIntentService.enqueue(this, page++)

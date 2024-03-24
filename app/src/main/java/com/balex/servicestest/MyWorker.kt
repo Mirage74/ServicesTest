@@ -17,7 +17,7 @@ class MyWorker(
     override fun doWork(): Result {
         log("doWork")
         val page = workerParameters.inputData.getInt(PAGE, 0)
-        for (i in 0 until 5) {
+        for (i in 0 until 10) {
             Thread.sleep(1000)
             log("Timer $i $page")
         }
@@ -36,6 +36,7 @@ class MyWorker(
 
         fun makeRequest(page: Int): OneTimeWorkRequest {
             return OneTimeWorkRequestBuilder<MyWorker>().apply {
+                //setInputData(workDataOf(Pair(PAGE, page)))
                 setInputData(workDataOf(PAGE to page))
                 setConstraints(makeConstraints())
             }.build()
